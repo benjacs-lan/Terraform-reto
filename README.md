@@ -1,12 +1,11 @@
 #  Arquitectura Cloud Escalable y Segura (AWS & Terraform)
 
-Este repositorio contiene la definición de una infraestructura moderna, diseñada para soportar cargas de trabajo de producción siguiendo las mejores prácticas de la industria. Hemos construido una base sólida enfocada en disponibilidad, seguridad y automatización.
+Este repositorio contiene la definición de una infraestructura moderna, diseñada para soportar cargas de trabajo de producción siguiendo las mejores prácticas de la industria. Busque construir una base sólida enfocada en disponibilidad, seguridad y automatización. Usando localstack, tflocal e awslocal
 
 ##  Diagrama de Arquitectura
 
 El siguiente diagrama de alto nivel ilustra el flujo de tráfico y la segregación de capas de nuestra infraestructura. 
 
-```mermaid
 graph TB
     Client([Client / Internet]) --> IGW[Internet Gateway]
     
@@ -26,14 +25,17 @@ graph TB
             DB_SG --> RDS[(Amazon RDS - PostgreSQL)]
         end
     end
-    
-    classDef public fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef private fill:#fce4ec,stroke:#880e4f,stroke-width:2px;
-    classDef database fill:#fff3e0,stroke:#e65100,stroke-width:2px;
-    
+
+    %% Estilos mejorados (alto contraste)
+    classDef public fill:#1565c0,stroke:#0d47a1,stroke-width:2px,color:#ffffff;
+    classDef private fill:#6a1b9a,stroke:#4a148c,stroke-width:2px,color:#ffffff;
+    classDef database fill:#ef6c00,stroke:#e65100,stroke-width:2px,color:#ffffff;
+    classDef edgeLabel color:#ffffff;
+
+    %% Aplicación de clases
     class ALB,ASG,EC2_A,EC2_B public;
     class RDS database;
-```
+    class DB_SG private;
 
 ---
 
@@ -41,17 +43,17 @@ graph TB
 
 Esta infraestructura no es simplemente un conjunto de recursos aislados; está diseñada bajo los siguientes pilares de la ingeniería confiable de sistemas (SRE):
 
-### 1. Infraestructura como Código (IaC) 💻
+### 1. Infraestructura como Código (IaC) 
 Toda la infraestructura está provisionada de manera declarativa con **Terraform**. 
 - **¿Por qué?** La configuración manual a través de la consola web no es escalable ni auditable. Al usar IaC, logramos configuraciones **reproducibles**, control de versiones exacto de nuestros entornos, capacidades de *rollback*, y la eliminación del *Configuration Drift* (inconsistencias entre entornos).
 - **Implementación:** Código modular segmentado por dominio (`network`, `compute`, `database`, `loadbalancer`).
 
-### 2. Seguridad por Diseño (Security by Design) 🔒
+### 2. Seguridad por Diseño (Security by Design) 
 Los datos críticos están completamente aislados del internet público. 
 - **¿Por qué?** Una base de datos expuesta es la receta para una brecha de seguridad de nivel de exfiltración.
 - **Implementación:** Se utiliza una arquitectura de **Múltiples Capas (Multi-Tier)**. La base de datos RDS reside en recursos aprovisionados sobre **Private Subnets** que no tienen rutas directas al *Internet Gateway*. Además, el *Security Group* de la base de datos implementa el principio de privilegio mínimo (Least Privilege), aceptando exclusivamente conexiones que provengan del *Security Group* de la capa web.
 
-### 3. Alta Disponibilidad y Resiliencia (High Availability) ⚖️
+### 3. Alta Disponibilidad y Resiliencia (High Availability) 
 El sistema está diseñado para sobrevivir a caídas de instancias o picos de tráfico de manera autónoma.
 - **¿Por qué?** "Todo falla, todo el tiempo". Debemos diseñar sistemas que se auto-reparen sin necesidad de levantar a un ingeniero a las 3:00 AM.
 - **Implementación:** 
@@ -60,9 +62,7 @@ El sistema está diseñado para sobrevivir a caídas de instancias o picos de tr
 
 ---
 
-## 📂 Organización del Proyecto
-
-Hemos implementado un versionado lógico y segmentado de los archivos de Terraform para facilitar su lectura y extensión por equipos multidisciplinarios:
+##  Organización del Proyecto
 
 ```text
 dia1-vpc/terraform/
@@ -76,7 +76,7 @@ dia1-vpc/terraform/
 └── variables/outputs       # Entradas y exposición de URIs críticas
 ```
 
-## 🚀 Despliegue Local (LocalStack)
+##  Despliegue Local (LocalStack)
 
 Para iteraciones de ciclo de desarrollo rápido e independiente de costos de nube real, estamos usando LocalStack.
 
