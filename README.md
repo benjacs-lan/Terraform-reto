@@ -36,7 +36,7 @@ graph TB
     class ALB,ASG,EC2_A,EC2_B public;
     class RDS database;
     class DB_SG private;
-
+```
 ---
 
 ## 🛠️ Principios de Diseño Implementados
