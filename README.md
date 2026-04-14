@@ -5,8 +5,7 @@ Este repositorio contiene la definición de una infraestructura moderna, diseña
 ##  Diagrama de Arquitectura
 
 El siguiente diagrama de alto nivel ilustra el flujo de tráfico y la segregación de capas de nuestra infraestructura. 
-mermaid
-
+```mermaid
 graph TB
     Client([Client / Internet]) --> IGW[Internet Gateway]
     
