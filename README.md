@@ -5,7 +5,8 @@ Este repositorio contiene la definición de una infraestructura moderna, diseña
 ##  Diagrama de Arquitectura
 
 El siguiente diagrama de alto nivel ilustra el flujo de tráfico y la segregación de capas de nuestra infraestructura. 
-```mermaind
+mermaid
+
 graph TB
     Client([Client / Internet]) --> IGW[Internet Gateway]
     
@@ -36,7 +37,7 @@ graph TB
     class ALB,ASG,EC2_A,EC2_B public;
     class RDS database;
     class DB_SG private;
-```
+
 ---
 
 ## 🛠️ Principios de Diseño Implementados
